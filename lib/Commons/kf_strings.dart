@@ -10,7 +10,7 @@ const kfContentRetreaveErrorMessage =
 
 const dummyVideourl =
     "https://assets.mixkit.co/videos/preview/mixkit-group-of-friends-partying-happily-4640-large.mp4";
-const kfAppName = "KeFlix";
+const kfAppName = "Kenya Flix";
 const dummyMovieImageUrl = "https://i.goojara.to/mb_228_228238.jpg";
 const kfAppLogoAsset = "assets/images/kenya_flix_logo.png";
 const kfMoviesBaseUrl = "https://www.goojara.to/watch-movies";
@@ -461,3 +461,5 @@ final List<Map<String, String>> category = [
     "url": kfSeriesBaseUrl,
   }
 ];
+
+String webCookie = "wooz=rfsplpsc5gk9gm9fu6trkrjh7r; utkap=dTIzda; xylay=CMhxBb; zgwtz=tZzCVk; thggn=KpOfGC; wyndr=DVFjZA; adpvd=rdGIeR; iagkh=GdArNSad";

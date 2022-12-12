@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:kenyaflix/Commons/kf_extensions.dart';
+import 'package:kenyaflix/Commons/kf_keys.dart';
 import 'package:kenyaflix/Commons/kf_strings.dart';
+import 'package:kenyaflix/Screens/kf_home_screen.dart';
 import 'package:nb_utils/nb_utils.dart' hide log;
 import 'package:provider/provider.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 import '../Commons/kf_functions.dart';
 import '../Provider/kf_provider.dart';
-import 'Auth/auth_home_screen.dart';
 
 class KFSplashScreen extends StatefulWidget {
   const KFSplashScreen({Key? key}) : super(key: key);
@@ -34,11 +37,20 @@ class _KFSplashScreenState extends State<KFSplashScreen> {
     await 5.seconds.delay;
   }
 
-  void launchToHomeScreen() {
-    Future.delayed(
-        Duration.zero,
-        () => const AuthHomeScreen().launch(context, isNewTask: true));
+  Future<void> launchToHomeScreenFirstTime() async {
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        await setValue(keyNotFirstTime, true);
+        const KFHomeScreen().launch(context, isNewTask: true);
+      });
+    }
   }
+
+  Future<void> launchToHomeScreen() async =>
+      WidgetsBinding.instance.addPostFrameCallback(
+          (timeStamp) => const KFHomeScreen().launch(context, isNewTask: true));
+
+  bool get firstTime => getBoolAsync(keyNotFirstTime);
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +58,32 @@ class _KFSplashScreenState extends State<KFSplashScreen> {
         future: _ready(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            launchToHomeScreen();
+            if (!firstTime) {
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>
+                  showDialog(
+                      context: context, builder: (_) => _loadingScaffold()));
+            } else {
+              launchToHomeScreen();
+            }
             return _loadingWidget();
           }
           return _loadingWidget();
         });
   }
+
+  Widget _loadingScaffold() => Scaffold(
+        body: FutureBuilder(
+            future: 5000.milliseconds.delay,
+            builder: (context, snap) {
+              if (snap.ready) {
+                launchToHomeScreenFirstTime();
+              }
+              log('Loading scaffold');
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
+      );
 
   Widget _loadingWidget() => Scaffold(
         body: Column(
@@ -60,13 +92,14 @@ class _KFSplashScreenState extends State<KFSplashScreen> {
             DefaultTextStyle(
                 style: boldTextStyle(
                     size: 44,
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 231, 26, 11),
                     fontFamily: 'assets/fonts/BungeeInline-Regular.ttf'),
                 child: AnimatedTextKit(
-                  isRepeatingAnimation: false,
+                    isRepeatingAnimation: false,
                     animatedTexts: [
-                  TypewriterAnimatedText(kfAppName.toUpperCase(), speed: 200.milliseconds)
-                ])),
+                      TypewriterAnimatedText(kfAppName.toUpperCase(),
+                          speed: 200.milliseconds)
+                    ])),
           ],
         ).center().paddingSymmetric(vertical: 30),
       );

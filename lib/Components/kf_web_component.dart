@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:html/parser.dart';
+import 'package:kenyaflix/Commons/kf_strings.dart';
 import 'package:kenyaflix/Components/kf_movie_results.dart';
 import 'package:nb_utils/nb_utils.dart' hide log;
 
@@ -64,7 +65,7 @@ class _WebComponentState extends State<WebComponent> {
       android: AndroidInAppWebViewOptions(useShouldInterceptRequest: true));
 
   Widget _web() => InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse(url)),
+        initialUrlRequest: URLRequest(url: Uri.parse(url), headers: {'Cookie' : webCookie}),
         initialOptions: options2,
         onWebViewCreated: (controller) {
           webViewController = controller;

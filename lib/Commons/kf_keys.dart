@@ -15,3 +15,4 @@ const keyAuthSkip = "auth_skip";
 const keyEmail = "email";
 const keyPassword = "password";
 const keyConfirmPassword = "confirm_password";
+const keyNotFirstTime = "first_time";

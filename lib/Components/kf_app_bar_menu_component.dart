@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kenyaflix/Commons/kf_menus.dart';
 import 'package:kenyaflix/Provider/kf_provider.dart';
+import 'package:kenyaflix/Utils/ad_helper.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -19,8 +20,10 @@ class KFAppBarMenuComponent extends StatelessWidget {
           itemCount: kfTopAppBarMenu.length,
           itemBuilder: (context, index) => InkWell(
             onTap: () {
+              showInterstitialAd();
               context.read<KFProvider>().updateHomeCategory(index);
               controller!.jumpTo(controller!.position.minScrollExtent);
+              createInterstitialAd();
             },
             child: Container(
               padding: const EdgeInsets.all(6),

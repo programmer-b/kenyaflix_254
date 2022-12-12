@@ -281,7 +281,7 @@ class _KFVideoLoadingComponentState extends State<KFVideoLoadingComponent> {
                         children: [
                           10.height,
                           Text(
-                            "Loading this video is taking longer than expected. Please try to connect to fast internet connection or restart the app and try again",
+                            "Loading this video is taking longer than expected. Please try to connect to fast internet connection or re install the app and try again",
                             style: boldTextStyle(color: kfPrimaryTextColor),
                             textAlign: TextAlign.center,
                           ),
